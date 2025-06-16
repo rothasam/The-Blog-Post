@@ -17,11 +17,30 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    protected $table = 'users';
+    protected $primaryKey = 'user_id';
+    public $incrementing = true;
+    public $timestamps = true;
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'dob',
+        'role',
     ];
+
+    public function posts(){
+        return $this->hasMany(Post::class); 
+    }
+    public function bookmarks(){
+        return $this->belongsToMany(Bookmark::class); 
+    }
+    public function authorRequests(){
+        return $this->hasMany(AuthorRequest::class); 
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
