@@ -25,12 +25,19 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
+        'gender_id',
         'email',
         'password',
         'dob',
-        'role',
+        'role_id',
     ];
 
+    public function role(){
+        return $this->belongsTo(Role::class); 
+    }
+    public function gender(){
+        return $this->belongsTo(Gender::class);
+    }
     public function posts(){
         return $this->hasMany(Post::class); 
     }

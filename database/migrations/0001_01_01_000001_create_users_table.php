@@ -15,13 +15,16 @@ return new class extends Migration
             $table->smallIncrements('user_id');
             $table->string('first_name');
             $table->string('last_name');
+            $table->unsignedTinyInteger('gender_id')->default(3);
             $table->string('email')->unique();
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->timestamp('dob')->nullable();
-            $table->enum('role', ['admin', 'author','reader'])->default('reader');
+            $table->unsignedTinyInteger('role_id')->default(3); // default to 'reader'
             // $table->rememberToken();
             $table->timestamps();
+            $table->foreign('role_id')->references('role_id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('gender_id')->references('gender_id')->on('genders')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
