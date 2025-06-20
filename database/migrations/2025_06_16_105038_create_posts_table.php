@@ -19,7 +19,7 @@ return new class extends Migration
             $table->mediumText('content');
             $table->string('thumbnail')->nullable();
             $table->boolean('is_deleted')->default(false);
-            $table->timestamp('published_at')->nullable();
+            $table->timestamp('published_at');
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });

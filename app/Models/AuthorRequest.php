@@ -11,6 +11,7 @@ class AuthorRequest extends Model
     public $incrementing = true;
     public $timestamps = true;
 
+    
     protected $fillable = [
         'user_id',
         'describe',
@@ -23,5 +24,6 @@ class AuthorRequest extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
+        
+    } 
 }

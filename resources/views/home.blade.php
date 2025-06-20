@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-    <title>Welcome</title>
+    <title>Home</title>
 @endsection
 
 @section('header')
@@ -9,6 +9,5 @@
 @endsection
 
 @section('content')
-    <h1 class="text-red-700 font-bold text-[40px]">hello</h1>
+    <h1 class="text-red-700 font-bold text-[40px]">This is homepage</h1>
 @endsection
-
