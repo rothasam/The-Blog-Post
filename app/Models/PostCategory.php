@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PostCategory extends Model
 {
+    use HasFactory;
     protected $table = 'post_categories';
     protected $primaryKey = 'post_category_id';
     public $incrementing = true;

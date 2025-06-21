@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    Use HasFactory;
     protected $table = 'posts';
     protected $primaryKey = 'post_id';
     public $incrementing = true;
@@ -30,7 +32,7 @@ class Post extends Model
     }
 
     public function postCategories(){
-        return $this->hasMany(PostCategory::class);
+        return $this->hasMany(PostCategory::class,'post_id');
     }
 
 }
