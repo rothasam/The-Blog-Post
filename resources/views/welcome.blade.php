@@ -1,11 +1,11 @@
-@extends('layouts.main')
+@extends('layouts.app')
 
 @section('title')
     <title>Welcome</title>
 @endsection
 
 @section('header')
-    @include('reusable.header')
+    @include('shared.header')
 @endsection
 
 @section('content')

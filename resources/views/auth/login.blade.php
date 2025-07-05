@@ -1,1 +1,5 @@
-<h1>Thiss is login page</h1>
+@extends('layouts.app')
+
+@section('title')
+    <title>Login</title>
+@endsection

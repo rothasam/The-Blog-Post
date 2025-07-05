@@ -21,7 +21,7 @@ class AuthorRequest extends Model
     /**
      * Get the user that owns the author request.
      */
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class);
         
