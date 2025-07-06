@@ -12,7 +12,7 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::all()->where('is_deleled',false);
+        $posts = Post::all()->where('is_deleted',false);
         
         return view('shared.posts.index',compact('posts'));
     }
@@ -125,8 +125,11 @@ class PostController extends Controller
     }
 
 
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        Log::info('Deleting Post: ', ['post_id' => $post->post_id]);
+        $post->is_deleted = true;
+        $post->save();
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully!');
     }
 }

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedSmallInteger('user_id');
             $table->foreign('post_id')->references('post_id')->on('posts')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->unique(['user_id', 'post_id']); // Prevent duplicate bookmarks
         });
     }
 

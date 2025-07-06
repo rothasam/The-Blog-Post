@@ -41,9 +41,17 @@ class User extends Authenticatable
     public function posts(){
         return $this->hasMany(Post::class); 
     }
+
+    // direct access to Bookmark records with no detail
     public function bookmarks(){
-        return $this->belongsToMany(Bookmark::class); 
+        return $this->hasMany(Bookmark::class,'user_id','user_id'); 
     }
+
+    // for convenient access to bookmarked posts with detail
+    public function bookmarkedPosts(){
+        return $this->belongsToMany(Post::class,'bookmarks','user_id','post_id');
+    }
+
     public function authorRequests(){
         return $this->hasMany(AuthorRequest::class); 
     }

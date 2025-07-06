@@ -29,8 +29,18 @@
                         <div class="flex justify-between items-center text-sm text-gray-500">
                              <span>{{ $post->formatDate($post->published_at) }}</span>
                             <div>
+                            @php
+                                $isBookmarked = \App\Models\Bookmark::where('user_id', 1)->where('post_id', $post->post_id)->exists();
+                            @endphp
+                                <form action="{{ route('bookmark.store', $post) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="{{ $isBookmarked ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500' }}">
+                                        <i class="fa-solid fa-bookmark"></i>
+                                    </button>
+                                </form>
+                    
                                 <a href="{{ route('posts.edit',$post) }}"><span><i class="fa-solid fa-file-pen"></i></span></a>
-                                <button onclick="openModal()" class="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10"><i class="fa-regular fa-trash-can"></i></button>
+                                <button onclick="openModal('{{ $post->post_id }}')" class="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10"><i class="fa-regular fa-trash-can"></i></button>
                                 <a href="{{ route('posts.show', $post->post_id) }}" 
                                 class="text-blue-500 hover:underline font-medium">
                             Read More
@@ -74,7 +84,11 @@
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                    <button type="button"  class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Yes</button>
+                    <form id="onDelete" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"  class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Yes</button>
+                    </form>
                     <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto">No</button>
                 </div>
                 </div>
@@ -86,8 +100,11 @@
 @section('scripting')
 
 <script>
-function openModal() {
+function openModal(post_id) {
+    post_id = parseInt(post_id);
+    // alert(typeof(post_id));
     document.getElementById('deleteModal').classList.remove('hidden');
+    document.getElementById('onDelete').action = `/posts/${post_id}`;
 }
 
 function closeModal() {

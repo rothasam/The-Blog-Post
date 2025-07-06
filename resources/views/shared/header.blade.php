@@ -10,8 +10,8 @@
     <div class="lg:flex lg:gap-x-12">
      
 
-      <a href="#" class="text-sm/6 font-semibold text-gray-900">Home</a>
-      <a href="#" class="text-sm/6 font-semibold text-gray-900">Marketplace</a>
+      <a href="{{ route('posts.index') }}" class="text-sm/6 font-semibold text-gray-900">Home</a>
+      <a href="{{ route('bookmarks.index') }}" class="text-sm/6 font-semibold text-gray-900">Bookmark</a>
       <a href="{{ route('posts.create') }}" class="text-sm/6 font-semibold text-gray-900">CREATE POST</a>
     </div>
     <div class="lg:flex lg:flex-1 lg:justify-end">
