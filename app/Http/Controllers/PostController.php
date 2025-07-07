@@ -78,6 +78,7 @@ class PostController extends Controller
             return view('shared.not_found');
         }
 
+        $post->increment('count_view'); // increase 1 view
 
         return view('shared.posts.show', compact('post'));
     }

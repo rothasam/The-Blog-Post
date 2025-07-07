@@ -11,18 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->mediumIncrements('post_id');
+        Schema::create('comments', function (Blueprint $table) {
+            $table->mediumIncrements('comment_id');
+            $table->unsignedMediumInteger('post_id');
             $table->unsignedSmallInteger('user_id');
-            $table->string('title');
-            $table->string('description');
-            $table->mediumText('content');
-            $table->string('thumbnail')->nullable();
+            $table->text('describe');
             $table->boolean('is_deleted')->default(false);
-            $table->timestamp('published_at')->nullable();
             $table->timestamps();
+            $table->foreign('post_id')->references('post_id')->on('posts')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedInteger('count_view')->default(0);
         });
     }
 
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('comments');
     }
 };

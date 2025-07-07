@@ -52,6 +52,18 @@ class User extends Authenticatable
         return $this->belongsToMany(Post::class,'bookmarks','user_id','post_id');
     }
 
+    public function likes(){
+        return $this->hasMany(Like::class,'user_id','user_id'); 
+    }
+
+    public function likedPosts() {
+        return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id');
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class, 'user_id', 'user_id');
+    }
+
     public function authorRequests(){
         return $this->hasMany(AuthorRequest::class); 
     }

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +27,11 @@ Route::delete('/posts/{post}',[PostController::class,'destroy'])->name('posts.de
 
 
 Route::get('/bookmarks',[BookmarkController::class,'index'])->name('bookmarks.index');
-Route::post('/bookmark/{post}',[BookmarkController::class,'bookmarkPost'])->name('bookmark.store');
+Route::post('/bookmarks/{post}',[BookmarkController::class,'bookmarkPost'])->name('bookmarks.store');
 
+
+Route::post('/likes/{post}',[LikeController::class,'likePost'])->name('likes.store');
+
+
+Route::post('/comments',[CommentController::class,'store'])->name('comments.store');
+Route::delete('/comments/{comment}',[CommentController::class,'destroy'])->name('comments.destroy');

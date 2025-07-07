@@ -42,6 +42,17 @@ class Post extends Model
     // bookmarks() → direct access to Bookmark records (hasMany)
     // bookmarkedByUsers() → easy access to Users via pivot (belongsToMany)
 
+    public function likes(){
+        return $this->hasMany(Like::class,'post_id','post_id');
+    }
+    public function likedByUsers(){
+        return $this->belongsToMany(User::class, 'likes', 'post_id', 'user_id');
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class,'post_id','post_id');
+    }
+
     public function categories(){
         return $this->belongsToMany(Category::class,'post_category','post_id','category_id');
     }

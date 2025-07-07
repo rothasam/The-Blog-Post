@@ -11,7 +11,7 @@ class BookmarkController extends Controller
 {
     public function bookmarkPost(Post $post){
 
-        $bookmark = Bookmark::where('post_id',1)
+        $bookmark = Bookmark::where('user_id',1)
                             ->where('post_id',$post->post_id)
                             ->first();
         if($bookmark){

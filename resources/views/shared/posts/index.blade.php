@@ -32,7 +32,7 @@
                             @php
                                 $isBookmarked = \App\Models\Bookmark::where('user_id', 1)->where('post_id', $post->post_id)->exists();
                             @endphp
-                                <form action="{{ route('bookmark.store', $post) }}" method="POST">
+                                <form action="{{ route('bookmarks.store', $post) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="{{ $isBookmarked ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500' }}">
                                         <i class="fa-solid fa-bookmark"></i>
