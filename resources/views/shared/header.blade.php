@@ -15,7 +15,11 @@
       <a href="{{ route('posts.create') }}" class="text-sm/6 font-semibold text-gray-900">CREATE POST</a>
     </div>
     <div class="lg:flex lg:flex-1 lg:justify-end">
-      <a href="{{ url('auth/login') }}" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+      <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+      <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="text-sm/6 font-semibold text-gray-900">Log out <span aria-hidden="true">&rarr;</span></button>
+      </form>
     </div>
   </nav>
 </header>
