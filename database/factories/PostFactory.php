@@ -23,7 +23,7 @@ class PostFactory extends Factory
             'title' => fake()->text(25),
             'description' => fake()->paragraph(1),
             'content' => fake()->paragraph(10),
-            'thumbnail' => 'no_photo.jpg',
+            'thumbnail' => null,
             'is_deleted' => 0,
             'published_at' => fake()->date()
         ];

@@ -1,70 +1,142 @@
 @extends('layouts.app')
 
 @section('title')
-    <title>Post</title>
+    <title>{{ $post->title }} | Blog Post</title>
 @endsection
 
 @section('content')
-    <div>
-        <h1 class="text-blue-900 text-[40px]">{{ $post->title }}</h1>
-        <p>{{ $post->content }}</p>
-        <p>Publish at {{ $post->formatDate($post->published_at) }}</p>
-        <p>Author: <span class="text-red-700 font-bold">{{ $post->users ? $post->users->first_name . ' ' . $post->users->last_name : 'Unknown' }}</span></p>
+<div class="max-w-5xl mx-auto px-4 py-8">
+    
+    <!-- Post Header -->
+    <div class="mb-6">
+        <h1 class="text-4xl font-bold text-indigo-800 mb-2 leading-snug">{{ $post->title }} 🎯</h1>
+        <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
+            <span class="flex">
+                 <img src="{{ asset('images/icons/calendar.svg') }}" alt="Icon" class="w-5 h-5 mr-1">
+                {{ $post->formatDate($post->published_at) }}
+            </span>
+            <span class="flex">
+                <img src="{{ asset('images/icons/eye.svg') }}" alt="Icon" class="w-5 h-5 mr-1">
+                 {{ $post->count_view }} views
+            </span>
+            <span class="flex">
+                 <img src="{{ asset('images/icons/writing-hand-svgrepo-com.svg') }}" alt="Icon" class="w-5 h-5 mr-1">
+                {{ $post->users ? $post->users->first_name . ' ' . $post->users->last_name : 'Unknown Author' }}
+            </span>
+        </div>
+    </div>
 
+    <div class="aspect-[2.1] my-5">
+        <img src="{{ $post->thumbnail != null ? asset('storage/' . $post->thumbnail) : asset('images/thumbnail.png') }}"
+        alt="{{ $post->title }}"
+        class="w-full h-full m-auto object-cover rounded-2xl">
+    </div>
+
+    <!-- Post Content -->
+    <div class="prose max-w-none prose-indigo text-gray-800 mb-8">
+        {!! nl2br(e($post->content)) !!}
+    </div>
+
+    <!-- Categories -->
+    <div class="mb-8">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+            <img src="{{ asset('images/icons/folder-svgrepo-com.svg') }}" alt="Icon" class="w-5 h-5 mr-2">
+             Categories
+        </h3>
         @if ($post->categories->count())
-            <ul class="list-disc list-inside">
+            <div class="flex flex-wrap gap-2">
                 @foreach ($post->categories as $category)
-                    <li>{{ $category->name }}</li>
+                    <span class="inline-block bg-indigo-100 text-indigo-700 px-3 py-1 text-sm rounded-full font-medium">
+                        {{ $category->name }}
+                    </span>
                 @endforeach
-            </ul>
+            </div>
         @else
-            <p class="text-gray-500">No categories</p>
+            <p class="text-gray-400">No categories assigned.</p>
         @endif
+    </div>
 
+    <!-- Like Button -->
+    @auth
         @php
-            $user_id = 1;
+            $user_id = auth()->user()->user_id;
             $hasLiked = \App\Models\Like::where('user_id', $user_id)->where('post_id', $post->post_id)->exists();
         @endphp
-
-        <form action="{{ route('likes.store', $post) }}" method="POST">
-            @csrf
-            <button type="submit" class="px-3 py-1 rounded {{ $hasLiked ? 'bg-blue-500 text-white' : 'bg-gray-200' }}">
-                {{ $hasLiked ? 'Unlike' : 'Like' }}
+    @endauth
+    <form action="{{ route('likes.store', $post) }}" method="POST" class="mb-10">
+        @csrf
+       @if(auth()->check())  
+            <x-input type="hidden" id="likePost" name="user_id" value="{{ $user_id }}"/> 
+            <button type="submit"
+                class="flex items-center gap-2 px-4 py-2 rounded-md font-medium transition
+                {{ $hasLiked ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                <img src="{{ asset('images/icons/heart.svg') }}" alt="Icon" class="w-5 h-5">
+                {{ $hasLiked ? 'Unlike' : 'Like' }} ({{ $post->count_like }})
             </button>
-        </form>
+       @else
+            <button type="submit"
+                    class="flex items-center gap-2 px-4 py-2 rounded-md font-medium transition
+                bg-gray-200 text-gray-700 hover:bg-gray-300">
+                <img src="{{ asset('images/icons/heart.svg') }}" alt="Icon" class="w-5 h-5">
+                Like ({{ $post->count_like }})
+            </button>
+       @endif
+       
+        
+    </form>
 
-        <h3>Count View : {{ $post->count_view }}</h3>
+    <!-- Comments Section -->
+    <div class="mb-10">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center"> 
+             <img src="{{ asset('images/icons/comment.svg') }}" alt="Icon" class="w-5 h-5 mr-2">
+            Comments ({{ $post->comments->where('is_deleted', false)->count() }})
+        </h3>
 
-        <h3 class="font-bold text-lg mb-2">Comments ({{ $post->comments->count() }})</h3>
-
-        @foreach($post->comments->where('is_deleted', false) as $com)
-            <div class="p-3 border rounded my-2">
-                <div>
-                    <p class="font-semibold">{{ $com->users->first_name }} {{ $com->users->last_name }}</p>
-                    <p>{{ $com->describe }}</p>
-                    <p class="text-sm text-gray-500">{{ $com->created_at->diffForHumans() }}</p>
+        @forelse($post->comments->where('is_deleted', false) as $com)
+            <div class="p-4 bg-gray-50 border rounded-md mb-4 shadow-sm">
+                <div class="flex justify-between items-center mb-1">
+                    <div class="font-semibold text-indigo-700">{{ $com->users->first_name }} {{ $com->users->last_name }}</div>
+                    <div class="text-xs text-gray-400">{{ $com->created_at->diffForHumans() }}</div>
                 </div>
-                <div>
-                    <form action="{{ route('comments.destroy', $com) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-500">Delete</button>
-                    </form>
-                </div>
+                <p class="text-gray-700">{{ $com->describe }}</p>
+
+                @auth
+                    @if(auth()->user()->user_id === $com->user_id )
+                        <form action="{{ route('comments.destroy', $com) }}" method="POST" class="mt-2 text-sm">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="text-red-500 hover:underline">🗑️ Delete</button>
+                        </form>
+                    @endif
+                @endauth
             </div>
-        @endforeach
-
-        <div>
-            <h5>Leave comment</h5>
-            <form action="{{ route('comments.store') }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <input type="text" name="post_id" value="{{ $post->post_id }}" hidden>
-                    <textarea name="describe" rows="3" class="w-full p-2 border rounded" placeholder="Write your comment here..." required></textarea>
-                </div>
-                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Submit</button>
-            </form>
-        </div>
-
+        @empty
+            <p class="text-gray-500 italic">No comments yet. Be the first to say something!</p>
+        @endforelse
     </div>
+
+    <!-- Add New Comment -->
+    <div class="bg-white border rounded-lg shadow p-5 ">
+            <h4 class="text-lg font-semibold mb-3 text-gray-800 flex items-center">
+                <img src="{{ asset('images/icons/writing-hand-svgrepo-com.svg') }}" alt="Icon" class="w-5 h-5 mr-1">
+                Leave a Comment
+            </h4>
+        <form action="{{ route('comments.store') }}" method="POST">
+            @csrf
+
+            @auth   
+                <x-input type="hidden" name="user_id" id="user_id" value="{{ auth()->user()->user_id }}"/>
+            @endauth
+            <x-input type="hidden" name="post_id" id="post_id" value="{{ $post->post_id }}"/>
+            <x-textarea name="describe"  placeholder="Write your thoughts..."/>
+
+            <div class="mt-3 text-right">
+                <button type="submit"
+                    class="inline-flex items-center gap-2 px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition">
+                    <img src="{{ asset('images/icons/message.svg') }}" alt="Icon" class="w-6 h-6 mr-1">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection

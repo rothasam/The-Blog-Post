@@ -1,18 +1,23 @@
 @extends('layouts.app')
 
 @section('title')
-    <section>
+<title>Login</title>
+@endsection
+
+@section('content')
+
+<section>
         
         <div class="w-full h-screen bg-green-200">
             <div class="grid grid-cols-2 gap-6">
                 <div>
 
                     
-                    <form action="{{ route('login') }}" method="POST">
+                    <form action="{{ route('login.store') }}" method="POST">
                         @csrf   
 
-                        <x-input labelName="Email"  name="email" type="email" />
-                        <x-input labelName="Password" name="password" type="password"/>
+                        <x-input labelName="Email"  id="email" name="email" type="email" />
+                        <x-input labelName="Password" id="pass" name="password" type="password" />
                         <button type="submit" class="btnPrimary">Login</button>
 
                     </form>
@@ -29,4 +34,5 @@
 
 
     </section>
+
 @endsection

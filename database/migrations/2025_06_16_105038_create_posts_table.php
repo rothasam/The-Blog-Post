@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedInteger('count_view')->default(0);
+            $table->unsignedInteger('count_like')->default(0);
         });
     }
 

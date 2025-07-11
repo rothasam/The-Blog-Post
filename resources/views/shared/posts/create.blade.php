@@ -5,56 +5,60 @@
 @endsection
 
 @section('content')
-<div class="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+<div class="max-w-3xl mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8 flex items-center justify-center gap-2">
+        📝 Create New Post
+    </h1>
 
-    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Create New Post</h1>
-
-    <form action="{{ route('posts.store') }}" method="POST" class="space-y-5 bg-white p-6 shadow rounded-lg">
+    <form action="{{ route('posts.store') }}" method="POST" class="space-y-6 bg-white p-8 shadow-lg rounded-2xl" enctype="multipart/form-data">
         @csrf
-        
+
+        <!-- Title -->
         <div>
-            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-            <input type="text" name="title" id="title" 
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                required>
+            <x-input labelName="Title" id="title" name="title"/>
         </div>
 
+        <!-- Description -->
         <div>
-            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <input type="text" name="description" id="description"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                required>
+            <x-input labelName="Description" id="description" name="description"/>
         </div>
 
+        <!-- Categories -->
         <div>
             <label for="categories" class="block text-sm font-medium text-gray-700 mb-1">Categories</label>
-            <select name="categories[]" multiple size="5" id="categories" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                <option value="">Select Category</option>
-              
+            <select name="categories[]" id="categories" multiple size="5"
+                class="block w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
                 @foreach ($categories as $category)
                     <option value="{{ $category->category_id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
+            <p class="text-xs text-gray-500 mt-1">Hold <kbd class="px-1 py-0.5 bg-gray-100 rounded border">Ctrl</kbd> or <kbd class="px-1 py-0.5 bg-gray-100 rounded border">Cmd</kbd> to select multiple</p>
         </div>
 
-        {{--test --}}
-        <input type="text" name="user_id" value="1" hidden>
+        <!-- Hidden user ID -->
+        <input type="hidden" name="user_id" value="{{ auth()->user()->role_id }}">
 
         <div>
+            <label class="block font-medium">Thumbnail</label>
+            <input type="file" name="thumbnail" class="w-full border rounded p-2" accept="image/*">
+        </div>
+        
+        <!-- Content (rich text) -->
+        <div>
             <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-            <textarea name="content" id="content" rows="5"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            <textarea name="content" id="content" rows="7"
+                class="block w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
                 required></textarea>
         </div>
 
-        <div class="pt-4">
+        <!-- Submit button -->
+        <div>
             <button type="submit"
-                class="w-full inline-flex justify-center items-center px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                Create Post
+                class="w-full inline-flex justify-center items-center px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition focus:ring-2 focus:ring-indigo-500">
+                🚀 Publish Post
             </button>
         </div>
-
     </form>
-
 </div>
+
 @endsection

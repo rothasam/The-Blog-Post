@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -35,23 +36,37 @@ class PostController extends Controller
             'title' => 'required|string|max:90',
             'description' => 'required|string|max:180',
             'content' => 'required|string',
-            'thumbnail' => 'nullable',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'categories' => 'required|array', // all selected categories as an array, here incomming data ex : "categories": [2, 5, 9]
             'categories.*' => 'exists:categories,category_id', // each category must exist in the categories table
                                     // (.*)  it mean each item in array of categories
         ]);
 
+        $thumbnailPath = null;
+
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+        }
 
         // $request['published_at'] = now();
-        $postData = $request->only([
-            'user_id',
-            'title',
-            'description',
-            'content',
-            'thumbnail',
-        ]);
+        // $postData = $request->only([
+        //     'user_id',
+        //     'title',
+        //     'description',
+        //     'content',
+        //     'thumbnail' => $thumbnailPath,
+        // ]);
 
-        $postData['published_at'] = $request->input('published_at', now());
+        // $postData['published_at'] = $request->input('published_at', now());
+
+        $postData = [
+            'user_id' => $request->user_id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'content' => $request->content,
+            'thumbnail' => $thumbnailPath,
+            'published_at' => $request->input('published_at', now()),
+        ];
 
         // store in tb posts
         $post = Post::create($postData);
@@ -105,20 +120,36 @@ class PostController extends Controller
             'title' => 'required|string|max:90',
             'description' => 'required|string|max:180',
             'content' => 'required|string',
-            'thumbnail' => 'nullable|string',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,category_id',
         ]);
 
-        $updateData = $request->only([
-            // 'user_id',
-            'title',
-            'description',
-            'content',
-            'thumbnail',
-        ]);
+        // Handle thumbnail upload
+        if ($request->hasFile('thumbnail')) {
 
-        $post->update($updateData);
+            // Delete old image if it exists and is not default
+            if ($post->thumbnail && Storage::disk('public')->exists($post->thumbnail) && !str_contains($post->thumbnail, 'default')) {
+                Storage::disk('public')->delete($post->thumbnail);
+            }
+
+            // Store new image with unique custom name
+            $thumbnailPath = $request->file('thumbnail')->storeAs(
+                'thumbnails',
+                uniqid() . '_' . $request->file('thumbnail')->getClientOriginalName(),
+                'public'
+            );
+
+            $post->thumbnail = $thumbnailPath;
+        }
+
+
+        $post->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'content' => $request->content,
+            // Thumbnail is already set above
+        ]);
 
         $post->categories()->sync($request->categories);  // replaces old ones with new selections
 
@@ -133,4 +164,9 @@ class PostController extends Controller
         $post->save();
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully!');
     }
+
+
+
+
+
 }

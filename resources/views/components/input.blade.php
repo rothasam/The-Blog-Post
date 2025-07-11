@@ -1,4 +1,4 @@
-@props(['labelName',
+@props(['labelName' => '',
         'type' => 'text',
         'id' => '',
         'name' => '',

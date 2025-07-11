@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gender;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,33 @@ class AuthController extends Controller
         // return redirect()->intended('/dashboard')->with('success', 'Login successful');
         return redirect()->intended('/')->with('success', 'Login successful');
 
+    }
+
+    public function showRegister(){
+        $genders = Gender::all();
+        return view('auth.register',compact('genders'));
+    }
+
+    public function register(Request $req){
+        $req->validate([
+            'first_name' => 'required|string|max:20',
+            'last_name' => 'required|string|max:20',
+            'gender_id' => 'nullable|exists:genders,gender_id',
+            'email' => 'required|unique:users,email',
+            'password' => 'required|string|min:6|confirmed'
+        ]);
+
+        $user = User::create([
+            'first_name'     => $req->first_name,
+            'last_name'     => $req->last_name,
+            'gender_id' => $req->gender_id,
+            'email'    => $req->email,
+            'password' => Hash::make($req->password),
+        ]);
+
+        Auth::login($user);
+
+        return redirect('/');
     }
 
     public function logout(Request $req){

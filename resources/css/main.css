@@ -1,4 +1,10 @@
+@plugin "flowbite/plugin";
 body{
-    background-color: rgb(209, 209, 209);
-    
+    /* background/-color: rgb(209, 209, 209); */
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* background: #667eea; */
+}
+.bgPrimary{
+    background-color: #667eea;
 }

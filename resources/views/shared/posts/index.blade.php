@@ -2,60 +2,83 @@
 
 @section('title')
     <title>Posts</title>
-
 @endsection
 
-@section('header')
-    @include('shared.header')
-
-@endsection
 
 @section('content')
-    <div class="max-w-[80%] mx-auto py-4 bg-amber-400">
+    <div class="max-w-7xl mx-auto py-10 px-4">
+    <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+        All Articles
+    </h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach ($posts as $post)
+            <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                <div class="h-44">
+                    <img src="{{ $post->thumbnail != null ? asset('storage/' . $post->thumbnail) : asset('images/thumbnail.png') }}"
+                     alt="{{ $post->title }}"
+                     class="w-full h-full object-cover">
+                </div>
 
-            @foreach ($posts as $post)
-                <div class="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow">
+                
 
-                    <img src="{{ asset('images/thumbnail.png') }}" 
-                        alt="{{ $post->title }}" 
-                        class="w-full h-48 object-cover">
+                <div class="p-5 flex flex-col flex-grow">
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800 line-clamp-2">
+                        {{ $post->title }}
+                    </h3>
 
-                    <div class="p-4">
-                        <h2 class="text-xl font-semibold mb-2 line-clamp-2">{{ $post->title }}</h2>
-                        <p class="text-gray-600 mb-4 line-clamp-3">{{ $post->description }}</p>
+                    <p class="text-sm text-gray-600 mb-4 line-clamp-3 flex-grow">
+                        {{ $post->description }}
+                    </p>
 
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                             <span>{{ $post->formatDate($post->published_at) }}</span>
-                            <div>
+                    <div class="flex items-center justify-between text-xs text-gray-500 mt-auto pt-3 border-t">
+                        <span class="flex items-center">
+                            <img src="{{ asset('images/icons/calendar.svg') }}" alt="Icon" class="w-5 h-5 mr-1">
+                             {{ $post->formatDate($post->published_at) }}
+                        </span>
+
+                        <div class="flex items-center gap-3 text-sm">
                             @php
                                 $isBookmarked = \App\Models\Bookmark::where('user_id', 1)->where('post_id', $post->post_id)->exists();
                             @endphp
-                                <form action="{{ route('bookmarks.store', $post) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="{{ $isBookmarked ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500' }}">
-                                        <i class="fa-solid fa-bookmark"></i>
+
+                            <!-- Bookmark -->
+                            <form action="{{ route('bookmarks.store', $post) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="{{ $isBookmarked ? 'text-blue-500' : 'text-gray-400 hover:text-blue-500' }}">
+                                    <i class="fa-solid fa-bookmark"></i>
+                                </button>
+                            </form>
+
+                            @auth
+
+                                @if(auth()->user()->role_id == 2)
+
+                                    <!-- Edit -->
+                                    <a href="{{ route('posts.edit', $post) }}" class="text-gray-500 hover:text-yellow-500">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+
+                                    <!-- Delete -->
+                                    <button onclick="openModal('{{ $post->post_id }}')" class="text-gray-500 hover:text-red-600">
+                                        <i class="fa-solid fa-trash-can"></i>
                                     </button>
-                                </form>
-                    
-                                <a href="{{ route('posts.edit',$post) }}"><span><i class="fa-solid fa-file-pen"></i></span></a>
-                                <button onclick="openModal('{{ $post->post_id }}')" class="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10"><i class="fa-regular fa-trash-can"></i></button>
-                                <a href="{{ route('posts.show', $post->post_id) }}" 
-                                class="text-blue-500 hover:underline font-medium">
-                            Read More
+                                @endif
+
+                            @endauth
+
+                            <!-- Read more -->
+                            <a href="{{ route('posts.show', $post->post_id) }}" class="text-indigo-600 hover:underline font-medium">
+                                Read
                             </a>
-                            </div>
                         </div>
                     </div>
-
                 </div>
-            @endforeach
-
-        </div>
-
-
+            </div>
+        @endforeach
     </div>
+</div>
+
 
 
 

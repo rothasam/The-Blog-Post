@@ -9,25 +9,27 @@
 
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Edit Post</h1>
 
-    <form action="{{ route('posts.update', $post->post_id) }}" method="POST" class="space-y-5 bg-white p-6 shadow rounded-lg">
+    <form action="{{ route('posts.update', $post->post_id) }}" method="POST" class="space-y-5 bg-white p-6 shadow rounded-lg" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
         <div>
-            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-            <input type="text" name="title" id="title" value="{{ old('title', $post->title) }}"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                required>
+            <x-input labelName="Title" name="title" id="title" value="{{ old('title', $post->title) }}"/>
+            
         </div>
 
         <div>
-            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <input type="text" name="description" id="description" value="{{ old('description', $post->description) }}"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                required>
+            <x-input labelName="Description" name="description" id="description" value="{{ old('description', $post->description) }}"/>
+        </div>
+
+        <div>
+            <label class="block font-medium">Thumbnail</label>
+            <input type="file" name="thumbnail" class="w-full border rounded p-2" accept="image/*">
         </div>
         
         <div>
+
+        
             <label for="categories" class="block text-sm font-medium text-gray-700 mb-1">Categories</label>
             <select name="categories[]" multiple size="5" id="categories"
                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -42,10 +44,8 @@
         </div>
 
         <div>
-            <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-            <textarea name="content" id="content" rows="5"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                required>{{ old('content', $post->content) }}</textarea>
+            <x-textarea name="content" id="content"   label="Content">{{ old('content', $post->content) }}</x-textarea>
+           
         </div>
 
         <div class="pt-4">
