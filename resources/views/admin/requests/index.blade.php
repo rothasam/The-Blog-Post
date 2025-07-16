@@ -6,18 +6,15 @@
     <!-- Author Requests -->
     <div class="bg-white p-6 rounded-2xl shadow-md md:col-span-2">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-5">
+        <div class=" mb-5">
             <h2 class="text-xl font-semibold flex items-center gap-2">
                 <img src="{{ asset('images/icons/writing-hand-svgrepo-com.svg') }}" alt="Icon" class="w-5 h-5 mr-1">
                 Author Applications
             </h2>
-            <a href="#" class="bg-indigo-500 hover:bg-indigo-600 text-white text-sm px-4 py-2 rounded-lg flex items-center gap-1 shadow">
-                 View All
-            </a>
         </div>
 
         <!-- Application Dropdown List -->
-        <div class="space-y-4  h-full flex items-center justify-center">
+        <div class="space-y-4  flex items-center justify-center">
         @if($author_req->isEmpty())
             <p class="text-gray-500 text-sm ">No request.</p>
         @else

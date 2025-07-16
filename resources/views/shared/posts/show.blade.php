@@ -5,8 +5,12 @@
 @endsection
 
 @section('content')
-<div class="max-w-5xl mx-auto px-4 py-8">
-    
+
+<div class="max-w-5xl mx-auto px-4 pb-8">
+    <a href="{{ route('admin.posts.index') }}" class="mb-5 inline-block text-gray-600 hover:underline">
+        ← Back to blog list
+    </a>
+
     <!-- Post Header -->
     <div class="mb-6">
         <h1 class="text-4xl font-bold text-indigo-800 mb-2 leading-snug">{{ $post->title }} 🎯</h1>
@@ -95,7 +99,12 @@
         @forelse($post->comments->where('is_deleted', false) as $com)
             <div class="p-4 bg-gray-50 border rounded-md mb-4 shadow-sm">
                 <div class="flex justify-between items-center mb-1">
-                    <div class="font-semibold text-indigo-700">{{ $com->users->first_name }} {{ $com->users->last_name }}</div>
+                    <div class="font-semibold text-indigo-700 flex items-center">
+                        <img src="{{ auth()->user()->profile->avatar 
+                            ? asset('storage/' . auth()->user()->profile->avatar) 
+                            : asset('images/thumbnail.png') }}" alt="Avatar" class="mr-3 w-12 h-12 rounded-full object-cover">
+                        {{ $com->users->first_name }} {{ $com->users->last_name }}
+                    </div>
                     <div class="text-xs text-gray-400">{{ $com->created_at->diffForHumans() }}</div>
                 </div>
                 <p class="text-gray-700">{{ $com->describe }}</p>

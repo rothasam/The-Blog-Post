@@ -36,7 +36,7 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class,'role_id','role_id'); 
     }
     public function gender(){
-        return $this->belongsTo(Gender::class);
+        return $this->belongsTo(Gender::class,'gender_id','gender_id');
     }
     public function posts(){
         return $this->hasMany(Post::class); 

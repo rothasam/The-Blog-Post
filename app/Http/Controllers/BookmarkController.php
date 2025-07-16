@@ -6,12 +6,15 @@ use App\Models\Bookmark;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class BookmarkController extends Controller
 {
     public function bookmarkPost(Post $post){
 
-        $bookmark = Bookmark::where('user_id',1)
+        $user_id = Auth::id();
+
+        $bookmark = Bookmark::where('user_id',$user_id)
                             ->where('post_id',$post->post_id)
                             ->first();
         if($bookmark){
@@ -21,14 +24,14 @@ class BookmarkController extends Controller
         }else{
             Bookmark::create([
                 'post_id' => $post->post_id,
-                'user_id' => 1, // temp user
+                'user_id' => $user_id,
             ]);
             return redirect()->back()->with('success', 'Bookmark added successfully!');
         }
     }
 
     public function index(){
-        $user = User::find(1); // temp user
+        $user = User::find(Auth::user()->user_id); // temp user
 
         // Load bookmarked posts with full details
         $bookmarkedPosts = $user->bookmarkedPosts;

@@ -31,8 +31,12 @@ class AuthController extends Controller
 
         $req->session()->regenerate();
 
-        // return redirect()->intended('/dashboard')->with('success', 'Login successful');
-        return redirect()->intended('/')->with('success', 'Login successful');
+        if(Auth::user()->role_id == 1){
+            return redirect()->intended('/dashboard')->with('success', 'Login successful');
+        }else{
+
+            return redirect()->intended('/')->with('success', 'Login successful');
+        }
 
     }
 
@@ -58,6 +62,8 @@ class AuthController extends Controller
             'password' => Hash::make($req->password),
         ]);
 
+        $user->profile()->create();
+        
         Auth::login($user);
 
         return redirect('/');

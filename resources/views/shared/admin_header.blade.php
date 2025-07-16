@@ -8,6 +8,7 @@
             $titles = [
                 'admin.dashboard' => ['icon' => 'analysis-seo-graph-svgrepo-com.svg', 'title' => 'Dashboard Overview'],
                 'admin.posts.index' => ['icon' => 'content-marketing-management-seo-svgrepo-com.svg', 'title' => 'Post Management'],
+                'admin.posts.show' => ['icon' => 'writing-hand-svgrepo-com.svg', 'title' => 'Detail Blog'],
                 'admin.users.index' => ['icon' => 'user-1-svgrepo-com.svg', 'title' => 'User Management'],
                 'admin.author_request.index' => ['icon' => 'mail-svgrepo-com.svg', 'title' => 'Author Request'],
                 'admin.categories.index' => ['icon' => 'folder-svgrepo-com.svg', 'title' => 'Category Management'],

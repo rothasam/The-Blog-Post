@@ -39,7 +39,7 @@
 
                         <div class="flex items-center gap-3 text-sm">
                             @php
-                                $isBookmarked = \App\Models\Bookmark::where('user_id', 1)->where('post_id', $post->post_id)->exists();
+                                $isBookmarked = \App\Models\Bookmark::where('user_id', auth()->user()->user_id)->where('post_id', $post->post_id)->exists();
                             @endphp
 
                             <!-- Bookmark -->
@@ -52,7 +52,7 @@
 
                             @auth
 
-                                @if(auth()->user()->role_id == 2)
+                                @if(auth()->user()->role_id == 2 && auth()->user()->user_id === $post->user_id)
 
                                     <!-- Edit -->
                                     <a href="{{ route('posts.edit', $post) }}" class="text-gray-500 hover:text-yellow-500">

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="bg-white p-6 rounded-2xl shadow-md max-w-4xl mx-auto mt-10">
+<div class="bg-white p-6 rounded-2xl shadow-md max-w-4xl mx-auto my-10">
     <!-- Header -->
     <div class="flex justify-between items-center mb-5">
         <h2 class="text-xl font-semibold flex items-center gap-2">
@@ -28,22 +28,22 @@
         <div class="bg-gray-50 p-4 rounded-xl shadow-sm flex justify-between items-center">
             <div>
                 <h3 class="font-semibold text-gray-800">{{ $category->name }}</h3>
-                <p class="text-sm text-gray-600">Slug: {{ $category->slug }}</p>
             </div>
             <div class="flex gap-2">
                 <button type="button" 
- data-modal-target="default-modal"
-   data-modal-toggle="default-modal"
-   data-action="{{ route('admin.categories.update', $category) }}"
-   data-method="PUT"
-   data-title="Edit Category"
-   data-submit="Update"
-   data-name="{{ $category->name }}"
+                    data-modal-target="default-modal"
+                    data-modal-toggle="default-modal"
+                    data-action="{{ route('admin.categories.update', $category) }}"
+                    data-method="PUT"
+                    data-title="Edit Category"
+                    data-submit="Update"
+                    data-name="{{ $category->name }}"
 
                    class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow">
                     ✏️ Edit
                 </button>
-                <form action="#" method="POST" onsubmit="return confirm('Delete this category?')">
+                {{-- 
+                <form action="{{ route('admin.categories.destroy', $categories) }}" method="POST" onsubmit="return confirm('Delete this category?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
@@ -51,6 +51,7 @@
                         🗑️ Delete
                     </button>
                 </form>
+                --}}
             </div>
         </div>
         @empty
@@ -64,8 +65,6 @@
 
 
 
-
-
 <!-- Main modal -->
 <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
@@ -73,7 +72,7 @@
         <div class="relative bg-white rounded-lg shadow-sm ">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-900 ">
+                <h3 id="modal-title" class="text-xl font-semibold text-gray-900 ">
                     Add New Category
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
@@ -107,28 +106,29 @@
 @section('scripting')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const modal = document.getElementById('default-modal');
-        const form = document.getElementById('frm-category');
-        const methodInput = document.getElementById('form-method');
-        const nameInput = document.getElementById('category-name');
-        const title = modal.querySelector('h3');
-        const submitBtn = document.getElementById('modal-submit-button');
+    const modal = document.getElementById('default-modal');
+    const form = document.getElementById('frm-category');
+    const methodInput = document.getElementById('form-method');
+    const nameInput = form.querySelector('[name="name"]');
+    const title = document.getElementById('modal-title');
+    const submitBtn = document.getElementById('modal-submit-button');
 
-        document.querySelectorAll('[data-modal-toggle="default-modal"]').forEach(button => {
-            button.addEventListener('click', () => {
-                const action = button.getAttribute('data-action');
-                const method = button.getAttribute('data-method') || 'POST';
-                const name = button.getAttribute('data-name') || '';
-                const modalTitle = button.getAttribute('data-title') || 'Add New Category';
-                const submitText = button.getAttribute('data-submit') || 'Add';
+    document.querySelectorAll('[data-modal-toggle="default-modal"]').forEach(button => {
+        button.addEventListener('click', () => {
+            const action = button.getAttribute('data-action');
+            const method = button.getAttribute('data-method') || 'POST';
+            const name = button.getAttribute('data-name') || '';
+            const modalTitle = button.getAttribute('data-title') || 'Add New Category';
+            const submitText = button.getAttribute('data-submit') || 'Add';
 
-                form.action = action;
-                methodInput.value = method;
-                nameInput.value = name;
-                title.textContent = modalTitle;
-                submitBtn.textContent = submitText;
-            });
+            form.action = action;
+            if(methodInput) methodInput.value = method;
+            if(nameInput) nameInput.value = name;
+            if(title) title.textContent = modalTitle;
+            if(submitBtn) submitBtn.textContent = submitText;
         });
     });
+});
+
 </script>
 @endsection

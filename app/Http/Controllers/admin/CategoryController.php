@@ -35,4 +35,11 @@ class CategoryController extends Controller
 
         return redirect()->back();
     }
+
+    public function destroy(Category $category){
+        $category->is_deleted = true;
+        $category->save();
+
+        return redirect()->back();
+    }
 }

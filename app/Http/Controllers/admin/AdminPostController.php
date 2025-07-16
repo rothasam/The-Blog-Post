@@ -16,5 +16,16 @@ class AdminPostController extends Controller
         return view('admin.posts.index',compact('posts'));
     }
 
+    public function show(int $id){
+        $post = Post::find($id);
+        if (!$post) {
+            return view('shared.not_found');
+        }
+
+        $post->increment('count_view'); // increase 1 view
+
+        return view('shared.posts.show', compact('post'));
+    }
+
     
 }

@@ -54,6 +54,20 @@ class UserSeeder extends Seeder
             ],
         ];
 
+        $pfData = [
+            [
+                'user_id' => 1
+            ],
+            [
+                'user_id' => 2
+            ],
+            [
+                'user_id' => 3
+            ],
+        ];
+
+        
         DB::table('users')->insert($data);
+        DB::table('profile')->insert($pfData);
     }
 }

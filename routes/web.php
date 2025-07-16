@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminAuthorRequestController;
 use App\Http\Controllers\admin\AdminPostController;
+use App\Http\Controllers\admin\AdminProfileController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\UsersController;
@@ -55,6 +56,10 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/author_request',[AuthorRequestController::class,'store'])->name('author_request.store');
     Route::get('/author_request/create',[AuthorRequestController::class,'create'])->name('author_request.create');
 
+
+    Route::get('/profile',[ProfileController::class,'getProfile'])->name('profile');
+    Route::put('/profile/{user_id}',[ProfileController::class,'updateProfile'])->name('profile.update');
+
 });
 
 Route::get('/posts/{id}',[PostController::class,'show'])->name('posts.show'); // this round should be stay after post.create 
@@ -63,6 +68,7 @@ Route::middleware(['role_id:1'])->group(function(){
     Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('admin.dashboard');
     
     Route::get('/admin/posts',[AdminPostController::class,'index'])->name('admin.posts.index');
+    Route::get('/admin/posts/{id}',[AdminPostController::class,'show'])->name('admin.posts.show');
 
 
     Route::get('/users',[UsersController::class,'index'])->name('admin.users.index');
@@ -73,8 +79,9 @@ Route::middleware(['role_id:1'])->group(function(){
     Route::get('/categories',[CategoryController::class,'index'])->name('admin.categories.index');
     Route::post('/categories',[CategoryController::class,'store'])->name('admin.categories.store');
     Route::post('/categories/{category}',[CategoryController::class,'update'])->name('admin.categories.update');
+    Route::post('/categories/{category}/edit',[CategoryController::class,'destroy'])->name('admin.categories.destroy');
 
 
-    Route::get('/admin/profile',[ProfileController::class,'index'])->name('admin.profile.index');
+    Route::get('/admin/profile',[AdminProfileController::class,'index'])->name('admin.profile.index');
     
 });
