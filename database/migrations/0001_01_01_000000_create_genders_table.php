@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('genders', function (Blueprint $table) {
             $table->tinyIncrements('gender_id');
-            $table->string('name')->unique();
+            $table->string('name')->unipque();
         });
     }
 
