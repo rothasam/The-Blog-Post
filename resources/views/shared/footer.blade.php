@@ -1,11 +1,11 @@
 <footer class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white mt-15">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 ">
 
             <!-- Logo & Description -->
             <div>
                 <div class="flex items-center gap-2 mb-3">
-                    <span class="text-lg font-bold">BlogFlow</span>
+                     <img src="{{ asset('images/logo.png') }}" alt="" class="w-[100px] mb-4">
                 </div>
                 <p class="text-sm text-white/80">Your voice matters 📝 — Publish, explore, and engage with the community.</p>
             </div>

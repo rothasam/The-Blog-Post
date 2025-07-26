@@ -6,15 +6,20 @@
 
 @section('content')
 
-<section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-blue-100 py-10">
+<section class="h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-purple-200 to-white">
 
-    <div class="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+    <div class="w-full xl:max-w-[60%] lg:max-w-[75%] md:max-w-[85%] sm:max-w-[90%] bg-white rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
         
         <!-- Left Side: Illustration -->
-        <div class="hidden md:flex flex-col items-center justify-center bg-green-400 text-white p-10">
-            <h2 class="text-4xl font-bold mb-4">Join Us!</h2>
+        <div class="hidden md:flex flex-col items-center justify-center bg-indigo-600 text-white p-10">
+            <div>
+                <a href="{{ route('posts.index') }}" class="text-xl font-bold text-red-600 hover:underline">
+                <img src="{{ asset('images/logo.png') }}" alt="" class="w-[200px] mb-4">
+                </a>
+            </div>
+            <h2 class="lg:text-4xl text-3xl font-bold mb-4">Join Us!</h2>
             <p class="text-lg">Create your account and get started</p>
-            <img src="{{ asset('images/register-illustration.svg') }}" alt="Register Illustration" class="w-3/4 mt-6">
+            <img src="{{ asset('images/form/register.png') }}" alt="Register Illustration" class="w-3/4 mt-6">
         </div>
 
         <!-- Right Side: Form -->
@@ -26,13 +31,12 @@
 
                 <!-- First + Last Name Row -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-input labelName="First Name" id="first_name" name="first_name" />
-                    <x-input labelName="Last Name" id="last_name" name="last_name" />
+                    <x-input icon="true" iconName="person" placeholder="First Name" labelName="First Name" id="first_name" name="first_name" />
+                    <x-input icon="true" iconName="person" placeholder="Last Name" labelName="Last Name" id="last_name" name="last_name" />
                 </div>
 
                 <!-- Gender Dropdown -->
                 <div>
-                    <label for="gender_id" class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
                     <select 
                         name="gender_id" 
                         id="gender_id" 
@@ -49,16 +53,16 @@
                     @enderror
                 </div>
 
-                <x-input labelName="Email" id="email" name="email" type="email" />
-                <x-input labelName="Password" id="password" name="password" type="password" />
-                <x-input labelName="Confirm Password" id="password_confirmation" name="password_confirmation" type="password" />
+                <x-input icon="true" iconName="email" placeholder="Email" labelName="Email" id="email" name="email" type="email" />
+                <x-input icon="true" iconName="password" placeholder="Password" labelName="Password" id="password" name="password" type="password" />
+                <x-input icon="true" iconName="password" placeholder="Confirm password" labelName="Confirm Password" id="password_confirmation" name="password_confirmation" type="password" />
 
-                <button type="submit" class="w-full py-3 bg-green-600 text-white rounded-xl shadow-md hover:bg-green-700 transition-all font-semibold text-lg">
-                    Create Account
+                <button type="submit" class="w-full py-2 bg-indigo-600 text-white rounded shadow-md hover:bg-indigo-700 transition-all font-semibold text-lg">
+                    Register
                 </button>
 
                 <div class="text-center">
-                    <a href="{{ route('login') }}" class="text-sm text-green-600 hover:underline">Already have an account? Login</a>
+                    <a href="{{ route('login') }}" class="text-sm text-indigo-600 hover:underline">Already have an account? Login</a>
                 </div>
             </form>
         </div>

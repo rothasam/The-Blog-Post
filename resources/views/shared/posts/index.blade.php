@@ -14,13 +14,15 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach ($posts as $post)
             <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col">
-                <div class="h-44">
-                    <img src="{{ $post->thumbnail != null ? asset('storage/' . $post->thumbnail) : asset('images/thumbnail.png') }}"
-                     alt="{{ $post->title }}"
-                     class="w-full h-full object-cover">
-                </div>
 
-                
+                <a  href="{{ route('posts.show', $post->post_id) }}">
+                    <div class="h-44">
+                        <img src="{{ $post->thumbnail != null ? asset('storage/' . $post->thumbnail) : asset('images/thumbnail.png') }}"
+                        alt="{{ $post->title }}"
+                        class="w-full h-full object-cover">
+                    </div>
+                </a>
+
 
                 <div class="p-5 flex flex-col flex-grow">
                     <h3 class="text-lg font-semibold mb-2 text-gray-800 line-clamp-2">
@@ -38,19 +40,19 @@
                         </span>
 
                         <div class="flex items-center gap-3 text-sm">
-                            @php
-                                $isBookmarked = \App\Models\Bookmark::where('user_id', auth()->user()->user_id)->where('post_id', $post->post_id)->exists();
-                            @endphp
+                            @if(auth()->check())
+                                @php
+                                    $isBookmarked = \App\Models\Bookmark::where('user_id', auth()->user()->user_id)->where('post_id', $post->post_id)->exists();
+                                @endphp
 
-                            <!-- Bookmark -->
-                            <form action="{{ route('bookmarks.store', $post) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="{{ $isBookmarked ? 'text-blue-500' : 'text-gray-400 hover:text-blue-500' }}">
-                                    <i class="fa-solid fa-bookmark"></i>
-                                </button>
-                            </form>
+                                <!-- Bookmark -->
+                                <form action="{{ route('bookmarks.store', $post) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="{{ $isBookmarked ? 'text-blue-500' : 'text-gray-400 hover:text-blue-500' }}">
+                                        <i class="fa-solid fa-bookmark"></i>
+                                    </button>
+                                </form>
 
-                            @auth
 
                                 @if(auth()->user()->role_id == 2 && auth()->user()->user_id === $post->user_id)
 
@@ -65,7 +67,14 @@
                                     </button>
                                 @endif
 
-                            @endauth
+                            @else   
+                                <form action="{{ route('bookmarks.store', $post) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="text-gray-400 hover:text-blue-500">
+                                        <i class="fa-solid fa-bookmark"></i>
+                                    </button>
+                                </form>
+                            @endif
 
                             <!-- Read more -->
                             <a href="{{ route('posts.show', $post->post_id) }}" class="text-indigo-600 hover:underline font-medium">

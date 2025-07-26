@@ -32,9 +32,8 @@ class AuthController extends Controller
         $req->session()->regenerate();
 
         if(Auth::user()->role_id == 1){
-            return redirect()->intended('/dashboard')->with('success', 'Login successful');
+            return redirect()->intended('/admin/dashboard')->with('success', 'Login successful');
         }else{
-
             return redirect()->intended('/')->with('success', 'Login successful');
         }
 

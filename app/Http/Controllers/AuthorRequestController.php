@@ -19,7 +19,13 @@ class AuthorRequestController extends Controller
 
         AuthorRequest::create($data);
 
-        return redirect()->route('posts.index');
+        // return redirect()->route('posts.index');
+        return redirect()->back()->with('toast', [
+    'type' => 'success',
+    'message' => 'Item moved successfully!'
+]);
+
+
     }
 
     

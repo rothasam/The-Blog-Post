@@ -7,12 +7,14 @@
 @section('content')
 
 <div class="max-w-5xl mx-auto px-4 pb-8">
+   {{-- 
     <a href="{{ route('admin.posts.index') }}" class="mb-5 inline-block text-gray-600 hover:underline">
         ← Back to blog list
     </a>
+   --}}
 
     <!-- Post Header -->
-    <div class="mb-6">
+    <div class="my-6">
         <h1 class="text-4xl font-bold text-indigo-800 mb-2 leading-snug">{{ $post->title }} 🎯</h1>
         <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
             <span class="flex">

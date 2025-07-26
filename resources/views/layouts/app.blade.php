@@ -13,7 +13,7 @@
     @yield('styling') 
 
 </head>
-<body>
+<body class="bg-gray-50">
 
     <!-- Header section -->
 
@@ -60,7 +60,7 @@
             </main>
 
         @elseif(auth()->user()->role_id == 2 || auth()->user()->role_id == 3)
-            <main>
+            <main class="">
                 @yield('content')
             </main>
             @include('shared.footer')

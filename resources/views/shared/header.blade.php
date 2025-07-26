@@ -2,12 +2,12 @@
 
 
 <header class="bg-gradient-to-r from-indigo-600 to-purple-600 shadow-md " >
-    <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8 text-white" aria-label="Global">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-4 lg:px-8 text-white" aria-label="Global">
         <!-- Logo -->
         <div class="flex items-center gap-3 ">
             <a href="{{ route('posts.index') }}" class="flex items-center gap-2">
                 <!-- <img class="h-8 w-auto" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="Logo"> -->
-                <span class="font-bold text-lg">BlogFlow</span>
+                <img src="{{ asset('images/logo.png') }}" alt="" class="w-[100px] mb-4">
             </a>
         </div>
 
